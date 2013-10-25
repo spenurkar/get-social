@@ -16,19 +16,19 @@ import android.widget.Toast;
 
 import com.example.twitter.helper.TwitterHelper;
 
-public class TwitterFragment extends Fragment implements OnClickListener{
+public class TwitterFragment extends Fragment implements OnClickListener {
 
 	private EditText txtMessage;
 	private Button btnSend;
 	private TwitterHelper twitterHelper;
 	private ProgressDialog progressDialog;
 	private Activity context;
-	
+
 	public static Fragment newInstance(Context context) {
 		TwitterFragment f = new TwitterFragment();
 		return f;
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -40,15 +40,15 @@ public class TwitterFragment extends Fragment implements OnClickListener{
 			Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(
 				R.layout.fragment_twitter, null);
-		
+
 		txtMessage = (EditText) root.findViewById(R.id.txtMessage);
 		btnSend = (Button) root.findViewById(R.id.btnSend);
 
 		btnSend.setOnClickListener(this);
-		
+
 		return root;
 	}
-	
+
 	protected void showProgressDialog() {
 
 		progressDialog = ProgressDialog.show(getActivity(), "",
@@ -74,25 +74,32 @@ public class TwitterFragment extends Fragment implements OnClickListener{
 	private void showToast(String msg) {
 		Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 	}
-	
+
 	@Override
 	public void onClick(View v) {
-		if(v == btnSend){
-			
-			twitterHelper = new TwitterHelper(getActivity());
-			if (!twitterHelper.hasAccessToken()) {
-				twitterHelper.authorize();
+		if (v == btnSend) {
+
+			if (txtMessage.getText().toString().trim().length() > 0) {
+
+				twitterHelper = new TwitterHelper(getActivity());
+				if (!twitterHelper.hasAccessToken()) {
+					twitterHelper.authorize();
+				}
+
+				try {
+					twitterHelper.updateStatus(txtMessage.getText().toString()
+							+ " Have a look http://www.google.com");// getTimeLine("DubaiSC");
+					showToast("Your message has been posted...");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					showToast("Some error occured.");
+				}
+
+			}else{
+				showToast("Please enter your status.");
 			}
 
-			try {
-				twitterHelper.updateStatus(txtMessage.getText().toString() + " Have a look http://www.google.com");//getTimeLine("DubaiSC");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			showToast("Your message has been posted...");
-			
 		}
 	}
 }

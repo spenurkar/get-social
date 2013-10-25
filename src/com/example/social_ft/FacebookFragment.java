@@ -20,6 +20,7 @@ import com.facebook.widget.WebDialog.OnCompleteListener;
 public class FacebookFragment extends Fragment implements OnClickListener{
 
 	private Button btnSend;
+	private Session session;
 	
 	public static Fragment newInstance(Context context) {
 		FacebookFragment f = new FacebookFragment();
@@ -36,11 +37,13 @@ public class FacebookFragment extends Fragment implements OnClickListener{
 
 		btnSend.setOnClickListener(this);
 		
-		Session session = Session.getActiveSession();
+		
+		session = Session.getActiveSession();
 		if (session != null && session.isOpened()) {
 			// if the session is already open,
 			// try to show the selection fragment
 			Log.d("Snehal","FacebooK Logged In : " + session.getAccessToken());
+			session.closeAndClearTokenInformation();
 		} else {
 			// otherwise present the splash screen
 			// and ask the person to login.
@@ -53,7 +56,11 @@ public class FacebookFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(v == btnSend){
-			publishFeedDialog();
+			if(session.isOpened()){
+				publishFeedDialog();
+			}else{
+				Toast.makeText(getActivity(), "Login to Facebook first.", Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 	
