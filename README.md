@@ -20,10 +20,13 @@ After add this library in your project as external library. Then follow the belo
 
 2) After creating Facebook Applicaiton, you will get an App_Id.
 
-3) Add app_id in your strings.xml as  <string name="app_id">48xxxxxxxxxxx18</string>
+3) Add app_id in your strings.xml as  \<string name="app_id"\>48xxxxxxxxxxx18\</string\>
 
-4) Register Facebook LoginActivity in manifest as follows <activity android:name="com.facebook.LoginActivity" ></activity>
+4) Add metadata in your application tab  
+  \<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id" /\>
 
-5) Add Internet permission.  <uses-permission android:name="android.permission.INTERNET" />
+4) Register Facebook LoginActivity in manifest as follows \<activity android:name="com.facebook.LoginActivity" \>\</activity\>
+
+5) Add Internet permission.  \<uses-permission android:name="android.permission.INTERNET" /\>
 
 Rest functionality is provided in the app.
